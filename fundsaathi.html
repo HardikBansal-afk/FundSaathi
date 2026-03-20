@@ -1,0 +1,928 @@
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700&family=DM+Sans:wght@400;500&family=JetBrains+Mono:wght@500;600&display=swap');
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --navy:#0A0F1E;--n800:#131929;--n700:#1C2640;
+  --amber:#FBBF24;--adim:rgba(251,191,36,0.12);--aborder:rgba(251,191,36,0.28);
+  --green:#34D399;--gdim:rgba(52,211,153,0.12);--gborder:rgba(52,211,153,0.28);
+  --red:#F87171;--rdim:rgba(248,113,113,0.12);--rborder:rgba(248,113,113,0.28);
+  --blue:#60A5FA;--bdim:rgba(96,165,250,0.12);--bborder:rgba(96,165,250,0.28);
+  --w90:rgba(255,255,255,0.92);--w60:rgba(255,255,255,0.6);--w30:rgba(255,255,255,0.22);
+  --border:rgba(255,255,255,0.08);
+}
+html,body{background:var(--navy);font-family:'DM Sans',sans-serif;color:var(--w90)}
+.sora{font-family:'Sora',sans-serif}
+.mono{font-family:'JetBrains Mono',monospace}
+
+/* SCREENS */
+.screen{display:none;min-height:100vh;flex-direction:column}
+.screen.active{display:flex}
+@keyframes fadeUp{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:translateY(0)}}
+.fadein{animation:fadeUp 0.38s ease forwards}
+
+/* NAV */
+nav{display:flex;align-items:center;justify-content:space-between;padding:0 32px;height:60px;background:rgba(10,15,30,0.9);border-bottom:1px solid var(--border);position:sticky;top:0;z-index:50;backdrop-filter:blur(10px)}
+.nav-logo{display:flex;align-items:center;gap:8px;font-family:'Sora',sans-serif;font-size:17px;font-weight:700;cursor:pointer}
+.nav-icon{width:26px;height:26px;background:var(--amber);border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;color:#0A0F1E;flex-shrink:0}
+.nav-right{display:flex;gap:10px}
+.btn{padding:8px 18px;border-radius:100px;font-size:13px;font-weight:500;cursor:pointer;font-family:'DM Sans',sans-serif;transition:all 0.2s;border:none}
+.btn-ghost{background:transparent;border:1px solid var(--border);color:var(--w90)}
+.btn-ghost:hover{border-color:rgba(255,255,255,0.3)}
+.btn-amber{background:var(--amber);color:#0A0F1E}
+.btn-amber:hover{background:#FCD34D;transform:translateY(-1px)}
+.btn-big{padding:14px 30px;font-size:16px;border-radius:100px;cursor:pointer;font-weight:500;font-family:'DM Sans',sans-serif;transition:all 0.2s;border:none}
+.btn-big-amber{background:var(--amber);color:#0A0F1E}
+.btn-big-amber:hover{background:#FCD34D;transform:translateY(-2px)}
+.btn-big-ghost{background:transparent;border:1.5px solid rgba(255,255,255,0.2);color:var(--w90)}
+.btn-full{width:100%;padding:14px;border-radius:12px;font-size:15px;font-weight:500;cursor:pointer;font-family:'DM Sans',sans-serif;border:none;background:var(--amber);color:#0A0F1E;transition:all 0.2s;margin-bottom:10px}
+.btn-full:hover{background:#FCD34D;transform:translateY(-1px)}
+.btn-full-ghost{background:transparent;border:1px solid var(--border);color:var(--w60)}
+.btn-full-ghost:hover{border-color:rgba(255,255,255,0.25);color:var(--w90)}
+
+/* ============ SCREEN 1: LANDING ============ */
+#s1 .hero{flex:1;display:flex;align-items:center;justify-content:center;padding:60px 40px;gap:60px}
+#s1 .hero-left{max-width:520px}
+.eyebrow{display:inline-flex;align-items:center;gap:8px;background:var(--adim);border:1px solid var(--aborder);border-radius:100px;padding:5px 14px;margin-bottom:24px}
+.eyebrow-dot{width:6px;height:6px;background:var(--amber);border-radius:50%;animation:epulse 2s infinite}
+@keyframes epulse{0%,100%{opacity:1}50%{opacity:0.4}}
+.eyebrow span{font-size:12px;color:var(--amber);font-weight:500}
+#s1 h1{font-family:'Sora',sans-serif;font-size:clamp(42px,5.5vw,68px);font-weight:700;line-height:1.08;letter-spacing:-1.5px;margin-bottom:20px;color:#fff}
+#s1 h1 em{color:var(--amber);font-style:normal}
+#s1 .sub{font-size:17px;color:var(--w60);line-height:1.65;margin-bottom:32px;max-width:440px}
+.cta-row{display:flex;gap:12px;align-items:center;flex-wrap:wrap;margin-bottom:28px}
+.trust-row{display:flex;align-items:center;gap:10px}
+.avs{display:flex}.av{width:28px;height:28px;border-radius:50%;border:2px solid var(--navy);font-size:10px;display:flex;align-items:center;justify-content:center;font-weight:700;color:#fff;margin-left:-8px}
+.av:first-child{margin-left:0}
+.trust-txt{font-size:13px;color:var(--w60);margin-left:4px}
+.trust-stars{color:var(--amber);font-size:11px}
+.hero-visual{position:relative;width:360px;flex-shrink:0}
+.vis-card{background:var(--n800);border:1px solid var(--border);border-radius:20px;overflow:hidden;height:440px;position:relative}
+.vis-rain{position:absolute;inset:0;pointer-events:none;overflow:hidden}
+.rain-line{position:absolute;width:1px;background:rgba(147,197,253,0.18);animation:rl 2s linear infinite}
+@keyframes rl{from{top:-80px}to{top:110%}}
+.rider-scene{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;padding-bottom:40px}
+.float-card{position:absolute;background:rgba(19,25,41,0.92);border:1px solid rgba(255,255,255,0.1);border-radius:12px;padding:10px 14px;animation:fc 3s ease-in-out infinite;min-width:160px}
+.fc1{top:32px;right:-12px;animation-delay:0s}
+.fc2{top:160px;left:-16px;animation-delay:0.5s}
+.fc3{bottom:100px;right:-8px;animation-delay:1s}
+@keyframes fc{0%,100%{transform:translateY(0)}50%{transform:translateY(-5px)}}
+.fc-lbl{font-size:10px;color:var(--w60);margin-bottom:3px}
+.fc-val{font-size:13px;font-weight:600;display:flex;align-items:center;gap:6px}
+.pill-r{background:var(--rdim);color:var(--red);border:1px solid var(--rborder);border-radius:100px;padding:1px 8px;font-size:10px}
+.pill-g{background:var(--gdim);color:var(--green);border:1px solid var(--gborder);border-radius:100px;padding:1px 8px;font-size:10px}
+.plat-bar{padding:18px 32px;border-top:1px solid var(--border);border-bottom:1px solid var(--border)}
+.pb-lbl{text-align:center;font-size:11px;color:var(--w30);letter-spacing:1.5px;text-transform:uppercase;margin-bottom:14px}
+.plats{display:flex;justify-content:center;gap:32px;flex-wrap:wrap}
+.plat{font-size:13px;font-weight:600;color:rgba(255,255,255,0.18);letter-spacing:0.5px;transition:color 0.2s;cursor:default}
+.plat:hover{color:var(--w60)}
+.how-section{padding:56px 40px;background:var(--n800);border-top:1px solid var(--border)}
+.how-section h2{font-family:'Sora',sans-serif;font-size:clamp(28px,3.5vw,40px);font-weight:700;text-align:center;margin-bottom:40px;letter-spacing:-0.5px}
+.steps-row{display:flex;gap:16px;max-width:800px;margin:0 auto}
+.step-box{flex:1;background:var(--navy);border:1px solid var(--border);border-radius:16px;padding:24px;text-align:center}
+.step-n{width:48px;height:48px;border-radius:50%;background:var(--adim);border:2px solid var(--amber);display:flex;align-items:center;justify-content:center;font-family:'Sora',sans-serif;font-size:20px;font-weight:700;color:var(--amber);margin:0 auto 16px}
+.step-title{font-family:'Sora',sans-serif;font-size:15px;font-weight:600;margin-bottom:8px}
+.step-body{font-size:13px;color:var(--w60);line-height:1.55}
+.step-tag{margin-top:12px;display:inline-block;padding:3px 10px;border-radius:100px;font-size:11px;font-weight:500}
+.tag-g{background:var(--gdim);color:var(--green);border:1px solid var(--gborder)}
+.tag-a{background:var(--adim);color:var(--amber);border:1px solid var(--aborder)}
+.tag-r{background:var(--rdim);color:var(--red);border:1px solid var(--rborder)}
+.landing-cta{padding:60px 40px;text-align:center;border-top:1px solid var(--border)}
+.landing-cta h2{font-family:'Sora',sans-serif;font-size:clamp(28px,4vw,44px);font-weight:700;margin-bottom:12px}
+.landing-cta p{font-size:16px;color:var(--w60);margin-bottom:28px}
+.fine{margin-top:14px;font-size:12px;color:var(--w30)}
+.fine span{margin:0 6px}
+
+/* ============ SCREEN 2: ONBOARDING ============ */
+#s2 .onb-wrap{flex:1;display:flex;align-items:flex-start;justify-content:center;padding:32px 16px}
+.onb-card{background:var(--n800);border:1px solid var(--border);border-radius:24px;padding:32px;width:100%;max-width:460px}
+.prog-bar{display:flex;gap:4px;margin-bottom:6px}
+.pb-seg{flex:1;height:3px;border-radius:100px;background:rgba(255,255,255,0.1);transition:background 0.4s}
+.pb-seg.done{background:rgba(251,191,36,0.5)}
+.pb-seg.active{background:var(--amber)}
+.prog-meta{font-size:12px;color:var(--w30);display:flex;justify-content:space-between;margin-bottom:24px}
+.onb-illus{text-align:center;margin-bottom:24px}
+.onb-icon{width:80px;height:80px;border-radius:50%;background:var(--adim);border:1px solid var(--aborder);display:flex;align-items:center;justify-content:center;font-size:36px;margin:0 auto}
+.onb-h{font-family:'Sora',sans-serif;font-size:22px;font-weight:700;margin-bottom:8px}
+.onb-sub{font-size:14px;color:var(--w60);margin-bottom:24px;line-height:1.6}
+.flabel{font-size:12px;color:var(--w60);margin-bottom:6px;display:block;font-weight:500}
+.finput{width:100%;background:rgba(255,255,255,0.04);border:1.5px solid var(--border);border-radius:10px;padding:13px 15px;font-size:15px;color:var(--w90);font-family:'DM Sans',sans-serif;outline:none;transition:all 0.2s;margin-bottom:18px}
+.finput:focus{border-color:var(--amber)}
+.finput::placeholder{color:var(--w30)}
+.plat-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:20px}
+.pc{background:rgba(255,255,255,0.03);border:1.5px solid var(--border);border-radius:10px;padding:12px 6px;text-align:center;cursor:pointer;transition:all 0.2s;position:relative}
+.pc:hover{border-color:var(--aborder)}
+.pc.sel{border-color:var(--amber);background:var(--adim)}
+.pc-ico{font-size:20px;margin-bottom:5px}
+.pc-name{font-size:11px;color:var(--w60)}.pc.sel .pc-name{color:var(--amber)}
+.pc-check{position:absolute;top:6px;right:6px;width:16px;height:16px;background:var(--amber);border-radius:50%;display:none;align-items:center;justify-content:center;font-size:9px;color:#0A0F1E;font-weight:700}
+.pc.sel .pc-check{display:flex}
+.freq-pills{display:flex;gap:8px;margin-bottom:20px}
+.fp{flex:1;padding:11px 8px;border:1.5px solid var(--border);border-radius:10px;text-align:center;cursor:pointer;font-size:13px;color:var(--w60);transition:all 0.2s}
+.fp:hover{border-color:var(--aborder)}
+.fp.sel{border-color:var(--amber);background:var(--adim);color:var(--amber);font-weight:500}
+.slider-val{font-family:'Sora',sans-serif;font-size:36px;font-weight:700;color:var(--amber);text-align:center;margin-bottom:10px}
+input[type=range]{width:100%;height:4px;border-radius:100px;background:rgba(255,255,255,0.1);outline:none;-webkit-appearance:none;margin-bottom:6px}
+input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:20px;height:20px;border-radius:50%;background:var(--amber);cursor:pointer;border:3px solid var(--n800)}
+.slider-bench{font-size:12px;color:var(--w30);text-align:center;margin-bottom:20px}
+.sec-note{text-align:center;font-size:11px;color:var(--w30);margin-top:12px;display:flex;align-items:center;justify-content:center;gap:5px}
+.back-btn{background:none;border:none;color:var(--w30);font-size:13px;cursor:pointer;font-family:'DM Sans',sans-serif;margin-bottom:20px;padding:0;display:flex;align-items:center;gap:4px;transition:color 0.2s}
+.back-btn:hover{color:var(--w60)}
+
+/* ============ SCREEN 3: RISK ============ */
+#s3 .risk-wrap{flex:1;display:flex;align-items:flex-start;justify-content:center;padding:32px 16px}
+.risk-card{background:var(--n800);border:1px solid var(--border);border-radius:24px;padding:32px;width:100%;max-width:460px}
+.loading-center{text-align:center;padding:10px 0 24px}
+.spin{width:72px;height:72px;border-radius:50%;border:3px solid rgba(251,191,36,0.15);border-top-color:var(--amber);animation:spin 0.9s linear infinite;margin:0 auto 20px}
+@keyframes spin{to{transform:rotate(360deg)}}
+.ld-steps{display:flex;flex-direction:column;gap:0}
+.ld-row{display:flex;align-items:center;gap:10px;padding:10px 0;border-bottom:1px solid rgba(255,255,255,0.05)}
+.ld-dot{width:8px;height:8px;border-radius:50%;background:rgba(255,255,255,0.12);flex-shrink:0;transition:background 0.3s}
+.ld-dot.done{background:var(--green)}
+.ld-dot.act{background:var(--amber);animation:ldpulse 1s infinite}
+@keyframes ldpulse{0%,100%{opacity:1}50%{opacity:0.3}}
+.ld-txt{font-size:14px;color:var(--w60);transition:color 0.3s}
+.result-section{display:none}
+.gauge-wrap{text-align:center;margin-bottom:24px}
+.gauge-ring{width:140px;height:140px;position:relative;margin:0 auto 14px}
+.gauge-inner{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);text-align:center}
+.gauge-score{font-family:'Sora',sans-serif;font-size:30px;font-weight:700;color:#fff}
+.gauge-lbl{font-size:10px;color:var(--w60);letter-spacing:1px;text-transform:uppercase;margin-top:2px}
+.risk-badge{display:inline-flex;align-items:center;gap:6px;padding:7px 18px;border-radius:100px;font-family:'Sora',sans-serif;font-size:15px;font-weight:700;margin-bottom:10px}
+.rb-amber{background:var(--adim);border:1.5px solid var(--aborder);color:var(--amber)}
+.ai-box{background:rgba(255,255,255,0.03);border:1px solid var(--border);border-radius:12px;padding:16px;margin-bottom:18px;font-size:14px;color:var(--w60);line-height:1.6}
+.ai-box strong{color:var(--w90)}
+.cov-rows{display:flex;flex-direction:column;gap:10px;margin-bottom:22px}
+.cov-row{display:flex;align-items:center;gap:10px;font-size:13px}
+.cov-ico{width:30px;height:30px;border-radius:8px;background:var(--adim);display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0}
+
+/* ============ SCREEN 4: PLAN ============ */
+#s4 .plan-wrap{flex:1;padding:32px;max-width:700px;margin:0 auto;width:100%}
+#s4 h2{font-family:'Sora',sans-serif;font-size:26px;font-weight:700;margin-bottom:6px}
+#s4 .plan-sub{font-size:14px;color:var(--w60);margin-bottom:28px}
+.plan-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-bottom:24px}
+.plan-card{background:var(--n800);border:1.5px solid var(--border);border-radius:18px;padding:22px;cursor:pointer;transition:all 0.2s;position:relative}
+.plan-card:hover{border-color:var(--aborder);transform:translateY(-2px)}
+.plan-card.sel{border-color:var(--amber);background:rgba(251,191,36,0.04)}
+.plan-badge{font-size:10px;font-weight:600;padding:3px 8px;border-radius:100px;display:inline-block;margin-bottom:12px}
+.pb-pop{background:var(--adim);color:var(--amber);border:1px solid var(--aborder)}
+.pb-basic{background:rgba(255,255,255,0.06);color:var(--w60)}
+.pb-pro{background:var(--gdim);color:var(--green);border:1px solid var(--gborder)}
+.plan-name{font-family:'Sora',sans-serif;font-size:18px;font-weight:700;margin-bottom:4px}
+.plan-price{font-family:'JetBrains Mono',monospace;font-size:28px;font-weight:600;color:var(--amber);margin-bottom:4px}
+.plan-price span{font-size:13px;color:var(--w60);font-weight:400;font-family:'DM Sans',sans-serif}
+.plan-cov{font-size:13px;color:var(--w60);margin-bottom:14px}
+.plan-features{display:flex;flex-direction:column;gap:7px}
+.pf{font-size:12px;color:var(--w60);display:flex;align-items:center;gap:6px}
+.pf-check{color:var(--green);font-size:12px;flex-shrink:0}
+.plan-sel-ind{position:absolute;top:14px;right:14px;width:20px;height:20px;border-radius:50%;border:2px solid var(--border);background:transparent;transition:all 0.2s;display:flex;align-items:center;justify-content:center;font-size:11px}
+.plan-card.sel .plan-sel-ind{background:var(--amber);border-color:var(--amber);color:#0A0F1E}
+.plan-summary{background:var(--n800);border:1px solid var(--border);border-radius:16px;padding:20px;margin-bottom:20px}
+.ps-row{display:flex;justify-content:space-between;align-items:center;font-size:14px;padding:6px 0;border-bottom:1px solid rgba(255,255,255,0.05)}
+.ps-row:last-child{border-bottom:none;font-weight:500;font-size:15px}
+.ps-lbl{color:var(--w60)}
+.ps-val{color:var(--w90)}
+
+/* ============ SCREEN 5: DASHBOARD ============ */
+#s5{flex-direction:column}
+.dash-layout{display:flex;flex:1}
+.sidebar{width:210px;flex-shrink:0;background:var(--n800);border-right:1px solid var(--border);display:flex;flex-direction:column}
+.sb-user{padding:16px 18px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:10px}
+.sb-av{width:36px;height:36px;border-radius:50%;background:#E67E22;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;color:#fff;flex-shrink:0}
+.sb-name{font-size:14px;font-weight:500}
+.sb-meta{font-size:11px;color:var(--green);display:flex;align-items:center;gap:4px;margin-top:2px}
+.green-dot{width:5px;height:5px;background:var(--green);border-radius:50%;animation:epulse 2s infinite}
+.nav-items{padding:10px 8px;flex:1}
+.ni{display:flex;align-items:center;gap:8px;padding:9px 10px;border-radius:8px;cursor:pointer;font-size:13px;color:var(--w60);transition:all 0.18s;margin-bottom:2px}
+.ni:hover{background:rgba(255,255,255,0.04);color:var(--w90)}
+.ni.act{background:var(--adim);color:var(--amber);border:1px solid var(--aborder)}
+.ni-ico{font-size:14px;width:18px;text-align:center}
+.dash-main{flex:1;display:flex;flex-direction:column;overflow:hidden}
+.dash-top{height:52px;display:flex;align-items:center;justify-content:space-between;padding:0 20px;border-bottom:1px solid var(--border);background:var(--n800)}
+.dt-left h3{font-family:'Sora',sans-serif;font-size:16px;font-weight:600}
+.dt-left p{font-size:11px;color:var(--w60)}
+.wchip{display:flex;align-items:center;gap:6px;background:var(--rdim);border:1px solid var(--rborder);border-radius:100px;padding:4px 12px;font-size:12px;color:var(--red);font-weight:500}
+.alert-bar{padding:10px 20px;background:var(--rdim);border-bottom:1px solid var(--rborder);display:flex;align-items:center;gap:10px}
+.ap{width:8px;height:8px;border-radius:50%;background:var(--red);flex-shrink:0;animation:epulse 1.5s infinite}
+.alert-txt{flex:1;font-size:12px;color:var(--red)}
+.alert-txt strong{color:var(--w90)}
+.alert-dismiss{cursor:pointer;color:var(--w30);font-size:14px;margin-left:6px}
+.dash-content{padding:18px 20px;flex:1;overflow-y:auto}
+.kpi-row{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:16px}
+.kc{background:var(--n800);border:1px solid var(--border);border-radius:14px;padding:16px;position:relative;overflow:hidden;transition:all 0.2s}
+.kc:hover{transform:translateY(-1px)}
+.kc-top{position:absolute;top:0;left:0;right:0;height:3px;border-radius:14px 14px 0 0}
+.kc-lbl{font-size:11px;color:var(--w60);margin-bottom:8px;font-weight:500}
+.kc-val{font-family:'JetBrains Mono',monospace;font-size:24px;font-weight:600;color:#fff;margin-bottom:6px}
+.kc-sub{font-size:11px;color:var(--w60);display:flex;align-items:center;gap:4px}
+.ku{color:var(--green)}.kd{color:var(--red)}
+.mini-badge{display:inline-flex;align-items:center;gap:3px;padding:2px 8px;border-radius:100px;font-size:11px;font-weight:500;margin-top:8px}
+.mb-g{background:var(--gdim);color:var(--green);border:1px solid var(--gborder)}
+.mb-a{background:var(--adim);color:var(--amber);border:1px solid var(--aborder)}
+.mb-r{background:var(--rdim);color:var(--red);border:1px solid var(--rborder)}
+.risk-big{font-family:'Sora',sans-serif;font-size:22px;font-weight:700;color:var(--amber);margin-bottom:4px}
+.cvbar-track{height:3px;background:rgba(255,255,255,0.08);border-radius:100px;margin-top:8px;overflow:hidden}
+.cvbar-fill{height:100%;background:var(--green);border-radius:100px;width:76%}
+.two-col{display:grid;grid-template-columns:1fr 300px;gap:14px;margin-bottom:14px}
+.chart-card{background:var(--n800);border:1px solid var(--border);border-radius:14px;padding:18px}
+.cc-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px}
+.cc-title{font-family:'Sora',sans-serif;font-size:14px;font-weight:600}
+.tab-grp{display:flex;gap:3px;background:rgba(255,255,255,0.04);border-radius:7px;padding:3px}
+.tab{padding:4px 10px;border-radius:5px;font-size:11px;color:var(--w60);cursor:pointer;transition:all 0.2s}
+.tab.act{background:var(--amber);color:#0A0F1E;font-weight:500}
+.chart-leg{display:flex;gap:14px;margin-bottom:10px}
+.cl-item{display:flex;align-items:center;gap:5px;font-size:11px;color:var(--w60)}
+.cl-dot{width:7px;height:7px;border-radius:50%}
+.covered-bar{margin-top:10px;padding:8px 12px;background:var(--gdim);border:1px solid var(--gborder);border-radius:8px;font-size:12px;color:var(--green);display:flex;align-items:center;gap:6px}
+.insights-card{background:var(--n800);border:1px solid var(--border);border-radius:14px;padding:18px}
+.ic-head{display:flex;align-items:center;gap:8px;margin-bottom:4px}
+.ic-title{font-family:'Sora',sans-serif;font-size:14px;font-weight:600}
+.ai-tag{background:var(--adim);border:1px solid var(--aborder);border-radius:100px;padding:2px 7px;font-size:10px;color:var(--amber);font-weight:600}
+.ic-sub{font-size:11px;color:var(--w60);margin-bottom:14px}
+.ins-item{padding:12px;border-radius:10px;border:1px solid var(--border);margin-bottom:8px;cursor:pointer;transition:all 0.2s}
+.ins-item:hover{border-color:rgba(255,255,255,0.15)}
+.ins-item.ia{border-color:var(--aborder);background:var(--adim)}
+.ins-item.ir{border-color:var(--rborder);background:var(--rdim)}
+.ins-item.ig{border-color:var(--gborder);background:var(--gdim)}
+.ins-top{display:flex;align-items:center;gap:6px;margin-bottom:5px}
+.ins-title{font-size:12px;font-weight:500}
+.ins-body{font-size:11px;color:var(--w60);line-height:1.55;margin-bottom:6px}
+.conf-wrap{display:flex;align-items:center;gap:6px}
+.conf-track{flex:1;height:2px;background:rgba(255,255,255,0.1);border-radius:100px}
+.conf-fill{height:100%;border-radius:100px}
+.cf-a{background:var(--amber)}.cf-r{background:var(--red)}.cf-g{background:var(--green)}
+.conf-lbl{font-size:10px;color:var(--w30)}
+.act-card{background:var(--n800);border:1px solid var(--border);border-radius:14px;padding:18px}
+.ac-title{font-family:'Sora',sans-serif;font-size:14px;font-weight:600;margin-bottom:14px}
+.act-row{display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid rgba(255,255,255,0.04)}
+.act-row:last-child{border-bottom:none}
+.ad{width:7px;height:7px;border-radius:50%;flex-shrink:0}
+.adg{background:var(--green)}.ada{background:var(--amber)}.adgr{background:rgba(255,255,255,0.2)}
+.act-lbl{flex:1;font-size:12px;color:var(--w90)}
+.act-amt{font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--green);font-weight:600}
+.act-time{font-size:10px;color:var(--w30)}
+.trigger-btn{width:100%;padding:10px;border-radius:10px;background:rgba(248,113,113,0.1);border:1px solid var(--rborder);color:var(--red);font-size:13px;font-weight:500;cursor:pointer;font-family:'DM Sans',sans-serif;transition:all 0.2s;margin-top:10px}
+.trigger-btn:hover{background:rgba(248,113,113,0.2)}
+
+/* ============ SCREEN 6: TRIGGER ============ */
+#s6 .trig-wrap{flex:1;display:flex;align-items:flex-start;justify-content:center;padding:32px 16px}
+.trig-card{background:var(--n800);border:1px solid var(--rborder);border-radius:24px;padding:32px;width:100%;max-width:500px}
+.trig-icon-wrap{text-align:center;margin-bottom:24px}
+.trig-icon{width:80px;height:80px;border-radius:50%;background:var(--rdim);border:2px solid var(--rborder);display:flex;align-items:center;justify-content:center;font-size:36px;margin:0 auto 16px;animation:tpulse 2s infinite}
+@keyframes tpulse{0%,100%{box-shadow:0 0 0 0 rgba(248,113,113,0.3)}50%{box-shadow:0 0 0 12px rgba(248,113,113,0)}}
+.trig-h{font-family:'Sora',sans-serif;font-size:24px;font-weight:700;text-align:center;margin-bottom:6px}
+.trig-sub{font-size:14px;color:var(--w60);text-align:center;margin-bottom:24px}
+.trig-data{display:flex;flex-direction:column;gap:10px;margin-bottom:24px}
+.td-row{background:var(--navy);border:1px solid var(--border);border-radius:12px;padding:14px 16px;display:flex;align-items:center;justify-content:space-between}
+.td-lbl{font-size:13px;color:var(--w60);display:flex;align-items:center;gap:8px}
+.td-val{font-family:'JetBrains Mono',monospace;font-size:14px;font-weight:600}
+.val-r{color:var(--red)}.val-a{color:var(--amber)}.val-w{color:var(--w90)}
+.threshold-box{background:var(--rdim);border:1px solid var(--rborder);border-radius:12px;padding:16px;text-align:center;margin-bottom:24px}
+.tb-title{font-size:12px;color:var(--red);font-weight:500;margin-bottom:4px;letter-spacing:0.5px;text-transform:uppercase}
+.tb-val{font-family:'Sora',sans-serif;font-size:28px;font-weight:700;color:var(--red)}
+.tb-sub{font-size:13px;color:var(--w60);margin-top:4px}
+.trig-cta{font-family:'Sora',sans-serif;font-size:16px;font-weight:600;margin-bottom:8px;text-align:center}
+.trig-sub2{font-size:13px;color:var(--w60);text-align:center;margin-bottom:20px}
+.processing-steps{display:flex;flex-direction:column;gap:8px;margin-bottom:20px}
+.ps2-row{display:flex;align-items:center;gap:10px;padding:10px 12px;background:var(--navy);border-radius:10px;border:1px solid var(--border)}
+.ps2-dot{width:8px;height:8px;border-radius:50%;background:rgba(255,255,255,0.12);flex-shrink:0}
+.ps2-dot.ds{background:var(--green)}
+.ps2-dot.da{background:var(--amber);animation:ldpulse 1s infinite}
+.ps2-txt{font-size:13px;color:var(--w60)}
+
+/* ============ SCREEN 7: PAYOUT ============ */
+#s7 .pay-wrap{flex:1;display:flex;align-items:flex-start;justify-content:center;padding:32px 16px}
+.pay-card{background:var(--n800);border:1px solid var(--gborder);border-radius:24px;padding:32px;width:100%;max-width:460px;text-align:center}
+.success-ring{width:100px;height:100px;border-radius:50%;background:var(--gdim);border:2px solid var(--gborder);display:flex;align-items:center;justify-content:center;margin:0 auto 20px;animation:scaleIn 0.5s ease}
+@keyframes scaleIn{from{transform:scale(0.6);opacity:0}to{transform:scale(1);opacity:1}}
+.sr-inner{font-size:44px}
+.pay-h{font-family:'Sora',sans-serif;font-size:24px;font-weight:700;margin-bottom:6px;color:#fff}
+.pay-sub{font-size:14px;color:var(--w60);margin-bottom:8px}
+.pay-amount{font-family:'JetBrains Mono',monospace;font-size:52px;font-weight:600;color:var(--green);margin:16px 0;animation:countUp 1s ease}
+@keyframes countUp{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+.pay-upi{font-size:14px;color:var(--w60);margin-bottom:24px}
+.pay-receipt{background:var(--navy);border:1px solid var(--border);border-radius:16px;padding:20px;margin-bottom:24px;text-align:left}
+.pr-row{display:flex;justify-content:space-between;font-size:13px;padding:6px 0;border-bottom:1px solid rgba(255,255,255,0.05)}
+.pr-row:last-child{border-bottom:none;font-weight:500;padding-top:12px;margin-top:4px}
+.pr-lbl{color:var(--w60)}
+.pr-val{color:var(--w90);font-family:'JetBrains Mono',monospace;font-size:13px}
+.pr-val-g{color:var(--green)}
+.timeline{display:flex;align-items:center;justify-content:center;gap:6px;margin-bottom:24px;flex-wrap:wrap}
+.tl-step{display:flex;align-items:center;gap:4px;font-size:12px;padding:4px 10px;border-radius:100px;font-weight:500}
+.tl-done{background:var(--gdim);color:var(--green);border:1px solid var(--gborder)}
+.tl-arrow{color:var(--w30);font-size:12px}
+.confetti{position:fixed;top:0;left:0;right:0;pointer-events:none;z-index:999;overflow:hidden;height:100vh}
+.cf-piece{position:absolute;width:8px;height:8px;border-radius:1px;animation:fall linear forwards}
+@keyframes fall{from{top:-20px;transform:rotate(0deg)}to{top:110vh;transform:rotate(720deg)}}
+</style>
+
+<div id="app">
+
+<!-- ============ S1: LANDING ============ -->
+<div class="screen active" id="s1">
+<nav>
+  <div class="nav-logo" onclick="goS(1)">
+    <div class="nav-icon">&#9889;</div>
+    <span style="color:var(--w90)">Fund</span><span style="color:var(--amber)">Saathi</span>
+  </div>
+  <div style="display:flex;gap:20px">
+    <span style="font-size:13px;color:var(--w60);cursor:default">How it works</span>
+    <span style="font-size:13px;color:var(--w60);cursor:default">For Platforms</span>
+    <span style="font-size:13px;color:var(--w60);cursor:default">Pricing</span>
+  </div>
+  <div class="nav-right">
+    <button class="btn btn-ghost">Login</button>
+    <button class="btn btn-amber" onclick="goS(2)">Get Protected</button>
+  </div>
+</nav>
+<div id="s1-rain" style="position:absolute;top:60px;left:0;right:0;height:500px;overflow:hidden;pointer-events:none;z-index:0"></div>
+<div class="hero" style="position:relative;z-index:1">
+  <div class="hero-left fadein">
+    <div class="eyebrow"><div class="eyebrow-dot"></div><span>AI-Powered Income Protection</span></div>
+    <h1><em>Bad Weather</em><br>Shouldn't Mean<br>Bad Income.</h1>
+    <p class="sub">FundSaathi watches traffic, weather, and your earnings in real time. When risk rises, your protection activates — automatically.</p>
+    <div class="cta-row">
+      <button class="btn-big btn-big-amber" onclick="goS(2)">Start for Free &#8594;</button>
+      <button class="btn-big btn-big-ghost">See How It Works</button>
+    </div>
+    <div class="trust-row">
+      <div class="avs">
+        <div class="av" style="margin-left:0;background:#E67E22">RK</div>
+        <div class="av" style="background:#9B59B6">SP</div>
+        <div class="av" style="background:#2ECC71">AM</div>
+        <div class="av" style="background:#E91E63">DJ</div>
+        <div class="av" style="background:#3498DB">NK</div>
+      </div>
+      <div><div><span class="trust-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</span><span class="trust-txt">12,000+ delivery partners protected</span></div></div>
+    </div>
+  </div>
+  <div class="hero-visual fadein">
+    <div class="vis-card">
+      <div class="vis-rain" id="vis-rain"></div>
+      <svg width="100%" height="100%" viewBox="0 0 360 440" style="position:absolute;inset:0">
+        <rect width="360" height="440" fill="#0A0F1E"/>
+        <rect x="0" y="360" width="360" height="80" fill="#0D1322"/>
+        <line x1="180" y1="368" x2="180" y2="440" stroke="rgba(255,255,255,0.08)" stroke-width="1.5" stroke-dasharray="16,12"/>
+        <ellipse cx="100" cy="400" rx="35" ry="5" fill="rgba(147,197,253,0.05)"/>
+        <ellipse cx="270" cy="420" rx="28" ry="4" fill="rgba(147,197,253,0.05)"/>
+        <g transform="translate(140,270)">
+          <circle cx="15" cy="82" r="20" fill="#1C2640" stroke="#2D3D5A" stroke-width="1.5"/>
+          <circle cx="75" cy="82" r="20" fill="#1C2640" stroke="#2D3D5A" stroke-width="1.5"/>
+          <circle cx="15" cy="82" r="7" fill="#2D3D5A"/>
+          <circle cx="75" cy="82" r="7" fill="#2D3D5A"/>
+          <path d="M10 72 L20 32 L60 27 L82 44 L82 70" fill="none" stroke="#2D3D5A" stroke-width="2.5" stroke-linecap="round"/>
+          <rect x="20" y="27" width="48" height="28" rx="7" fill="#1C2640" stroke="#2D3D5A" stroke-width="1"/>
+          <rect x="56" y="10" width="38" height="28" rx="4" fill="#FBBF24"/>
+          <text x="75" y="28" text-anchor="middle" fill="#0A0F1E" font-size="9" font-weight="700" font-family="sans-serif">FS</text>
+          <line x1="22" y1="30" x2="10" y2="20" stroke="#2D3D5A" stroke-width="2" stroke-linecap="round"/>
+        </g>
+        <g transform="translate(176,228)">
+          <ellipse cx="22" cy="18" rx="18" ry="17" fill="#1E3A5F"/>
+          <rect x="8" y="24" width="28" height="7" rx="3" fill="#1E3A5F"/>
+          <rect x="10" y="26" width="24" height="3" rx="1.5" fill="rgba(147,197,253,0.15)"/>
+          <rect x="9" y="34" width="26" height="32" rx="5" fill="#1C2640"/>
+        </g>
+        <rect x="0" y="340" width="360" height="30" fill="rgba(13,19,34,0.8)"/>
+      </svg>
+      <div class="float-card fc1">
+        <div class="fc-lbl">Weather Alert</div>
+        <div class="fc-val"><span class="pill-r">&#127783; Heavy Rain</span> 3PM</div>
+      </div>
+      <div class="float-card fc2">
+        <div class="fc-lbl">Expected Loss</div>
+        <div class="fc-val" style="color:var(--red)">&#8722; &#8377;380 today</div>
+      </div>
+      <div class="float-card fc3">
+        <div class="fc-lbl">Auto-Payout</div>
+        <div class="fc-val"><span class="pill-g">&#10003; Triggered</span> &#8377;380</div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="plat-bar">
+  <div class="pb-lbl">Works with your platform</div>
+  <div class="plats">
+    <span class="plat">ZOMATO</span><span class="plat">SWIGGY</span><span class="plat">BLINKIT</span>
+    <span class="plat">DUNZO</span><span class="plat">ZEPTO</span><span class="plat">RAPIDO</span>
+  </div>
+</div>
+<div class="how-section">
+  <h2 class="sora">Three steps. Zero paperwork.</h2>
+  <div class="steps-row">
+    <div class="step-box"><div class="step-n">1</div><div class="step-title sora">Sign up & connect</div><div class="step-body">Link your delivery platform in 2 minutes. No documents needed.</div><span class="step-tag tag-a">2 minutes</span></div>
+    <div class="step-box"><div class="step-n">2</div><div class="step-title sora">AI monitors your risk</div><div class="step-body">Weather, traffic, and earnings analyzed every hour for your zone.</div><span class="step-tag tag-r">24/7 active</span></div>
+    <div class="step-box"><div class="step-n">3</div><div class="step-title sora">Automatic payout</div><div class="step-body">When risk triggers, money lands in your UPI. No claims needed.</div><span class="step-tag tag-g">2-hr payout</span></div>
+  </div>
+</div>
+<div class="landing-cta">
+  <h2 class="sora">Your next shift is covered.</h2>
+  <p>Join 12,000+ delivery partners protecting their income.</p>
+  <button class="btn-big btn-big-amber" onclick="goS(2)">Get Protected for Free &#8594;</button>
+  <div class="fine"><span>No credit card</span><span>&#183;</span><span>Setup in 2 minutes</span><span>&#183;</span><span>Cancel anytime</span></div>
+</div>
+</div>
+
+<!-- ============ S2: ONBOARDING ============ -->
+<div class="screen" id="s2">
+<nav>
+  <div class="nav-logo" onclick="goS(1)"><div class="nav-icon">&#9889;</div><span style="color:var(--w90)">Fund</span><span style="color:var(--amber)">Saathi</span></div>
+  <div style="font-size:13px;color:var(--w60)">Create your account</div>
+  <div style="width:80px"></div>
+</nav>
+<div class="onb-wrap">
+<div class="onb-card fadein">
+  <div class="prog-bar" id="obProg">
+    <div class="pb-seg active"></div><div class="pb-seg"></div><div class="pb-seg"></div><div class="pb-seg"></div>
+  </div>
+  <div class="prog-meta" id="obMeta"><span id="obStep">Step 1 of 4</span><span id="obTime">~1 minute left</span></div>
+
+  <!-- Step 1 -->
+  <div id="ob1">
+    <div class="onb-illus"><div class="onb-icon">&#128075;</div></div>
+    <div class="onb-h sora">Namaste! Let's get you protected</div>
+    <div class="onb-sub">4 quick steps — no paperwork, no hidden fees.</div>
+    <label class="flabel">Your full name</label>
+    <input class="finput" id="obName" placeholder="e.g. Ramesh Kumar">
+    <button class="btn-full" onclick="obNext(2)">Continue &#8594;</button>
+    <div class="sec-note">&#128274; Encrypted &amp; never sold</div>
+  </div>
+
+  <!-- Step 2 -->
+  <div id="ob2" style="display:none">
+    <button class="back-btn" onclick="obBack(1)">&#8592; Back</button>
+    <div class="onb-h sora">Which platform do you ride for?</div>
+    <div class="onb-sub">Select all that apply.</div>
+    <div class="plat-grid">
+      <div class="pc" onclick="toggleP(this)"><div class="pc-check">&#10003;</div><div class="pc-ico">&#127829;</div><div class="pc-name">Zomato</div></div>
+      <div class="pc" onclick="toggleP(this)"><div class="pc-check">&#10003;</div><div class="pc-ico">&#128757;</div><div class="pc-name">Swiggy</div></div>
+      <div class="pc" onclick="toggleP(this)"><div class="pc-check">&#10003;</div><div class="pc-ico">&#9889;</div><div class="pc-name">Blinkit</div></div>
+      <div class="pc" onclick="toggleP(this)"><div class="pc-check">&#10003;</div><div class="pc-ico">&#128230;</div><div class="pc-name">Dunzo</div></div>
+      <div class="pc" onclick="toggleP(this)"><div class="pc-check">&#10003;</div><div class="pc-ico">&#127978;</div><div class="pc-name">Zepto</div></div>
+      <div class="pc" onclick="toggleP(this)"><div class="pc-check">&#10003;</div><div class="pc-ico">&#43;</div><div class="pc-name">Other</div></div>
+    </div>
+    <div id="platErr" style="font-size:12px;color:var(--red);margin-bottom:10px;display:none">Please select at least one platform</div>
+    <button class="btn-full" onclick="obNext(3)">Continue &#8594;</button>
+  </div>
+
+  <!-- Step 3 -->
+  <div id="ob3" style="display:none">
+    <button class="back-btn" onclick="obBack(2)">&#8592; Back</button>
+    <div class="onb-h sora">Where do you primarily deliver?</div>
+    <div class="onb-sub">Loads local weather &amp; traffic data for your area.</div>
+    <label class="flabel">Your city</label>
+    <input class="finput" id="obCity" placeholder="e.g. Bengaluru, Delhi, Mumbai...">
+    <label class="flabel">Pincode <span style="color:var(--w30)">(optional)</span></label>
+    <input class="finput" placeholder="e.g. 560001">
+    <button class="btn-full" onclick="obNext(4)">Continue &#8594;</button>
+  </div>
+
+  <!-- Step 4 -->
+  <div id="ob4" style="display:none">
+    <button class="back-btn" onclick="obBack(3)">&#8592; Back</button>
+    <div class="onb-h sora">How often do you ride?</div>
+    <div class="onb-sub">Helps calibrate your coverage precisely.</div>
+    <div class="freq-pills">
+      <div class="fp sel" onclick="selFreq(this)">Daily</div>
+      <div class="fp" onclick="selFreq(this)">4&#8211;5 days/wk</div>
+      <div class="fp" onclick="selFreq(this)">Weekends</div>
+    </div>
+    <label class="flabel">Average daily earnings goal</label>
+    <div class="slider-val">&#8377;<span id="slv">850</span></div>
+    <input type="range" min="300" max="2000" step="50" value="850" oninput="document.getElementById('slv').textContent=this.value">
+    <div class="slider-bench" style="margin-bottom:18px">Most riders in your area target &#8377;700&#8211;&#8377;1,000/day</div>
+    <button class="btn-full" onclick="goS(3)">Calculate My Risk &#8594;</button>
+  </div>
+</div>
+</div>
+</div>
+
+<!-- ============ S3: RISK PREDICTION ============ -->
+<div class="screen" id="s3">
+<nav>
+  <div class="nav-logo" onclick="goS(1)"><div class="nav-icon">&#9889;</div><span style="color:var(--w90)">Fund</span><span style="color:var(--amber)">Saathi</span></div>
+  <div style="font-size:13px;color:var(--w60)">Risk Analysis</div>
+  <div style="width:80px"></div>
+</nav>
+<div class="risk-wrap">
+<div class="risk-card fadein">
+
+  <div id="riskLoading">
+    <div class="loading-center">
+      <div class="spin"></div>
+      <div style="font-family:'Sora',sans-serif;font-size:20px;font-weight:700;margin-bottom:6px">Calculating your risk profile</div>
+      <div style="font-size:13px;color:var(--w60)">Our AI is crunching the data...</div>
+    </div>
+    <div class="ld-steps">
+      <div class="ld-row"><div class="ld-dot act" id="ld1"></div><div class="ld-txt" id="lt1">Analyzing weather patterns for your city...</div></div>
+      <div class="ld-row"><div class="ld-dot" id="ld2"></div><div class="ld-txt" id="lt2">Checking historical traffic risk data...</div></div>
+      <div class="ld-row"><div class="ld-dot" id="ld3"></div><div class="ld-txt" id="lt3">Calculating income protection level...</div></div>
+    </div>
+  </div>
+
+  <div id="riskResult" class="result-section">
+    <div class="gauge-wrap">
+      <div class="gauge-ring">
+        <svg width="140" height="140" viewBox="0 0 140 140">
+          <circle cx="70" cy="70" r="54" fill="none" stroke="rgba(255,255,255,0.07)" stroke-width="9"/>
+          <circle cx="70" cy="70" r="54" fill="none" stroke="#FBBF24" stroke-width="9" stroke-dasharray="0 339" stroke-linecap="round" id="gArc" style="transform:rotate(-90deg);transform-origin:70px 70px;transition:stroke-dasharray 1.5s ease"/>
+        </svg>
+        <div class="gauge-inner">
+          <div class="gauge-score" id="gNum">0</div>
+          <div class="gauge-lbl">/ 100</div>
+        </div>
+      </div>
+      <div class="risk-badge rb-amber">&#9888; MEDIUM RISK</div>
+      <div style="font-size:13px;color:var(--w60)">Your personalized risk score</div>
+    </div>
+    <div class="ai-box">
+      Based on <strong>monsoon patterns</strong> in your city and shift frequency, your afternoon shifts carry <strong>elevated weather risk</strong>. FundSaathi recommends the <strong>Standard Plan</strong>.
+    </div>
+    <div class="cov-rows">
+      <div class="cov-row"><div class="cov-ico">&#128737;</div><div>Coverage: <strong>&#8377;500/day</strong> max payout</div></div>
+      <div class="cov-row"><div class="cov-ico">&#9889;</div><div>Trigger: Rain &gt;8mm or Traffic delay &gt;45min</div></div>
+      <div class="cov-row"><div class="cov-ico">&#128179;</div><div>Payout: UPI transfer within <strong>2 hours</strong></div></div>
+    </div>
+    <button class="btn-full" onclick="goS(4)">Choose Your Plan &#8594;</button>
+    <button class="btn-full btn-full-ghost" onclick="goS(4)">View full analysis</button>
+  </div>
+
+</div>
+</div>
+</div>
+
+<!-- ============ S4: PLAN SELECTION ============ -->
+<div class="screen" id="s4">
+<nav>
+  <div class="nav-logo" onclick="goS(1)"><div class="nav-icon">&#9889;</div><span style="color:var(--w90)">Fund</span><span style="color:var(--amber)">Saathi</span></div>
+  <div style="font-size:13px;color:var(--w60)">Choose Your Plan</div>
+  <div style="width:80px"></div>
+</nav>
+<div class="plan-wrap fadein">
+  <h2 class="sora">Choose your protection plan</h2>
+  <p class="plan-sub">Based on your risk score of 62, we recommend the <span style="color:var(--amber);font-weight:500">Standard Plan</span>.</p>
+  <div class="plan-grid">
+    <div class="plan-card" onclick="selPlan(this,'Basic')">
+      <div class="plan-sel-ind" id="pi-basic"></div>
+      <div class="plan-badge pb-basic">BASIC</div>
+      <div class="plan-name sora">Basic</div>
+      <div class="plan-price">&#8377;0<span>/month</span></div>
+      <div class="plan-cov">&#8377;200/day coverage</div>
+      <div class="plan-features">
+        <div class="pf"><span class="pf-check">&#10003;</span>Rain trigger</div>
+        <div class="pf"><span class="pf-check">&#10003;</span>UPI payout</div>
+        <div class="pf" style="color:var(--w30)"><span style="color:var(--w30)">&#8211;</span>Traffic trigger</div>
+        <div class="pf" style="color:var(--w30)"><span style="color:var(--w30)">&#8211;</span>24/7 support</div>
+      </div>
+    </div>
+    <div class="plan-card sel" id="planStandard" onclick="selPlan(this,'Standard')">
+      <div class="plan-sel-ind" id="pi-standard">&#10003;</div>
+      <div class="plan-badge pb-pop">RECOMMENDED</div>
+      <div class="plan-name sora">Standard</div>
+      <div class="plan-price">&#8377;49<span>/month</span></div>
+      <div class="plan-cov">&#8377;500/day coverage</div>
+      <div class="plan-features">
+        <div class="pf"><span class="pf-check">&#10003;</span>Rain + traffic triggers</div>
+        <div class="pf"><span class="pf-check">&#10003;</span>2-hour UPI payout</div>
+        <div class="pf"><span class="pf-check">&#10003;</span>AI risk alerts</div>
+        <div class="pf"><span class="pf-check">&#10003;</span>24/7 chat support</div>
+      </div>
+    </div>
+    <div class="plan-card" onclick="selPlan(this,'Pro')">
+      <div class="plan-sel-ind" id="pi-pro"></div>
+      <div class="plan-badge pb-pro">PRO</div>
+      <div class="plan-name sora">Pro</div>
+      <div class="plan-price">&#8377;129<span>/month</span></div>
+      <div class="plan-cov">&#8377;1,200/day coverage</div>
+      <div class="plan-features">
+        <div class="pf"><span class="pf-check">&#10003;</span>All Standard features</div>
+        <div class="pf"><span class="pf-check">&#10003;</span>30-min payout</div>
+        <div class="pf"><span class="pf-check">&#10003;</span>Multi-platform coverage</div>
+        <div class="pf"><span class="pf-check">&#10003;</span>Priority support</div>
+      </div>
+    </div>
+  </div>
+  <div class="plan-summary">
+    <div class="ps-row"><div class="ps-lbl">Selected plan</div><div class="ps-val" id="sumPlan">Standard</div></div>
+    <div class="ps-row"><div class="ps-lbl">Daily coverage</div><div class="ps-val" id="sumCov">&#8377;500/day</div></div>
+    <div class="ps-row"><div class="ps-lbl">Payout speed</div><div class="ps-val" id="sumSpeed">2 hours</div></div>
+    <div class="ps-row"><div class="ps-lbl">First 30 days</div><div class="ps-val" style="color:var(--green)">FREE</div></div>
+    <div class="ps-row"><div class="ps-lbl">Then per month</div><div class="ps-val" id="sumPrice">&#8377;49</div></div>
+  </div>
+  <button class="btn-full" onclick="goS(5)">Activate Coverage &#8594;</button>
+  <div style="text-align:center;font-size:12px;color:var(--w30);margin-top:8px">Cancel anytime &middot; No hidden charges</div>
+</div>
+</div>
+
+<!-- ============ S5: DASHBOARD ============ -->
+<div class="screen" id="s5">
+<nav>
+  <div class="nav-logo" onclick="goS(1)"><div class="nav-icon">&#9889;</div><span style="color:var(--w90)">Fund</span><span style="color:var(--amber)">Saathi</span></div>
+  <div style="font-size:13px;color:var(--green);display:flex;align-items:center;gap:6px"><div style="width:6px;height:6px;border-radius:50%;background:var(--green);animation:epulse 2s infinite"></div>Coverage Active</div>
+  <div style="font-size:13px;color:var(--w60)">Standard Plan</div>
+</nav>
+<div class="dash-layout">
+  <div class="sidebar">
+    <div class="sb-user">
+      <div class="sb-av">RK</div>
+      <div><div class="sb-name">Ramesh K.</div><div class="sb-meta"><div class="green-dot"></div>Active</div></div>
+    </div>
+    <div class="nav-items">
+      <div class="ni act"><span class="ni-ico">&#127968;</span>Home</div>
+      <div class="ni"><span class="ni-ico">&#8377;</span>Earnings</div>
+      <div class="ni"><span class="ni-ico">&#9889;</span>Risk Monitor</div>
+      <div class="ni"><span class="ni-ico">&#128203;</span>Claims</div>
+      <div class="ni"><span class="ni-ico">&#9881;</span>Settings</div>
+    </div>
+  </div>
+  <div class="dash-main">
+    <div class="dash-top">
+      <div class="dt-left"><h3 class="sora">Good afternoon, Ramesh &#9928;</h3><p>Friday, Mar 20 &middot; Bengaluru</p></div>
+      <div class="wchip">&#127783; 14&#176;C &middot; Heavy Rain</div>
+    </div>
+    <div class="alert-bar" id="dashAlert">
+      <div class="ap"></div>
+      <div class="alert-txt"><strong>Risk Alert:</strong> Heavy rain in your zone. Auto-payout monitoring is active.</div>
+      <span class="alert-dismiss" onclick="document.getElementById('dashAlert').style.display='none'">&#10005;</span>
+    </div>
+    <div class="dash-content">
+      <div class="kpi-row">
+        <div class="kc"><div class="kc-top" style="background:var(--green)"></div><div class="kc-lbl">Today's Earnings</div><div class="kc-val mono">&#8377;640</div><div class="kc-sub"><span class="ku">&#8593; &#8377;80</span>&nbsp;vs yesterday</div><svg width="100%" height="28" viewBox="0 0 140 28" style="margin-top:8px"><polyline points="0,24 20,20 42,17 64,22 86,13 108,16 128,11 140,9" fill="none" stroke="var(--green)" stroke-width="1.5" stroke-linecap="round"/></svg></div>
+        <div class="kc"><div class="kc-top" style="background:var(--amber)"></div><div class="kc-lbl">Current Risk Level</div><div class="risk-big">MODERATE</div><div class="kc-sub" style="color:var(--amber)">&#127783; Rain: 2PM&#8211;6PM</div><span class="mini-badge mb-a">&#9888; Elevated</span></div>
+        <div class="kc"><div class="kc-top" style="background:var(--red)"></div><div class="kc-lbl">Projected Impact</div><div class="kc-val mono" style="color:var(--red)">&#8722;&#8377;380</div><div class="kc-sub">Weather + traffic forecast</div><span class="mini-badge mb-g">&#10003; Covered &#8377;500/day</span></div>
+        <div class="kc"><div class="kc-top" style="background:var(--green)"></div><div class="kc-lbl">Coverage Status</div><div class="kc-val mono" style="font-size:18px;color:var(--green)">Active</div><div class="kc-sub">Renews in 23 days</div><div class="cvbar-track"><div class="cvbar-fill"></div></div></div>
+      </div>
+      <div class="two-col">
+        <div class="chart-card">
+          <div class="cc-head">
+            <div class="cc-title sora">Earnings Overview</div>
+            <div class="tab-grp"><div class="tab act">Today</div><div class="tab">Week</div><div class="tab">Month</div></div>
+          </div>
+          <div class="chart-leg">
+            <div class="cl-item"><div class="cl-dot" style="background:var(--amber)"></div>Actual</div>
+            <div class="cl-item"><div class="cl-dot" style="background:rgba(255,255,255,0.25)"></div>Expected</div>
+            <div class="cl-item"><div style="width:10px;height:7px;background:rgba(248,113,113,0.2);border-radius:2px"></div>Risk gap</div>
+          </div>
+          <canvas id="dashChart" height="160"></canvas>
+          <div class="covered-bar">&#10003; FundSaathi covered &#8377;380 of your income gap today</div>
+        </div>
+        <div class="insights-card">
+          <div class="ic-head"><div class="ic-title sora">AI Insights</div><span class="ai-tag">LIVE</span></div>
+          <div class="ic-sub">Updated hourly for your zone</div>
+          <div class="ins-item ia"><div class="ins-top"><span style="font-size:14px">&#128336;</span><span class="ins-title" style="color:var(--amber)">Best hours today</span></div><div class="ins-body">Rain clears 11AM&#8211;1PM. High demand before 3PM wave.</div><div class="conf-wrap"><div class="conf-track"><div class="conf-fill cf-a" style="width:87%"></div></div><span class="conf-lbl">87%</span></div></div>
+          <div class="ins-item ir"><div class="ins-top"><span style="font-size:14px">&#127783;</span><span class="ins-title" style="color:var(--red)">Tomorrow: High Risk</span></div><div class="ins-body">Heavy rain + event traffic near Koramangala.</div><div class="conf-wrap"><div class="conf-track"><div class="conf-fill cf-r" style="width:72%"></div></div><span class="conf-lbl">72% payout likely</span></div></div>
+          <div class="ins-item ig"><div class="ins-top"><span style="font-size:14px">&#128205;</span><span class="ins-title" style="color:var(--green)">Hotspot: Indiranagar</span></div><div class="ins-body">High demand, moderate traffic. +18% delivery rate.</div><div class="conf-wrap"><div class="conf-track"><div class="conf-fill cf-g" style="width:91%"></div></div><span class="conf-lbl">91%</span></div></div>
+        </div>
+      </div>
+      <div class="act-card">
+        <div class="ac-title sora">Recent Activity</div>
+        <div class="act-row"><div class="ad adg"></div><div class="act-lbl">Payout Received &middot; Rain Alert triggered</div><div class="act-amt">+&#8377;380</div><div class="act-time">Today, 3:45 PM</div></div>
+        <div class="act-row"><div class="ad ada"></div><div class="act-lbl">Risk Alert &middot; Heavy rainfall detected</div><div class="act-amt" style="color:var(--amber)">Alert</div><div class="act-time">Today, 1:12 PM</div></div>
+        <div class="act-row"><div class="ad adg"></div><div class="act-lbl">Payout Received &middot; Traffic delay &gt;45min</div><div class="act-amt">+&#8377;240</div><div class="act-time">Yesterday, 7:20 PM</div></div>
+        <div class="act-row"><div class="ad adgr"></div><div class="act-lbl">Coverage renewed &middot; Standard Plan</div><div class="act-amt" style="color:var(--w60)">&#8212;</div><div class="act-time">Mar 15</div></div>
+      </div>
+      <button class="trigger-btn" onclick="goS(6)">&#9888; Simulate: Trigger Detection &rarr; (Demo)</button>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- ============ S6: TRIGGER DETECTION ============ -->
+<div class="screen" id="s6">
+<nav>
+  <div class="nav-logo" onclick="goS(1)"><div class="nav-icon">&#9889;</div><span style="color:var(--w90)">Fund</span><span style="color:var(--amber)">Saathi</span></div>
+  <div style="font-size:13px;color:var(--red);display:flex;align-items:center;gap:6px;font-weight:500"><div style="width:6px;height:6px;border-radius:50%;background:var(--red);animation:epulse 1s infinite"></div>RISK TRIGGERED</div>
+  <button class="btn btn-ghost" onclick="goS(5)">&#8592; Dashboard</button>
+</nav>
+<div class="trig-wrap">
+<div class="trig-card fadein">
+  <div class="trig-icon-wrap">
+    <div class="trig-icon">&#127783;</div>
+    <div class="trig-h sora">Income Risk Detected</div>
+    <div class="trig-sub">FundSaathi's AI has flagged a qualifying weather event for your zone.</div>
+  </div>
+  <div class="trig-data">
+    <div class="td-row"><div class="td-lbl">&#127783; Rainfall intensity</div><div class="td-val val-r">14.2 mm/hr</div></div>
+    <div class="td-row"><div class="td-lbl">&#128652; Traffic delay</div><div class="td-val val-a">52 min avg</div></div>
+    <div class="td-row"><div class="td-lbl">&#127758; Your zone</div><div class="td-val val-w">Koramangala, BLR</div></div>
+    <div class="td-row"><div class="td-lbl">&#128337; Detected at</div><div class="td-val val-w">3:12 PM today</div></div>
+    <div class="td-row"><div class="td-lbl">&#128202; Risk score (live)</div><div class="td-val val-r">81 / 100</div></div>
+  </div>
+  <div class="threshold-box">
+    <div class="tb-title">&#10003; Payout threshold crossed</div>
+    <div class="tb-val">Both triggers met</div>
+    <div class="tb-sub">Rain &gt;8mm &amp; Traffic delay &gt;45min</div>
+  </div>
+  <div class="trig-cta sora">Auto-payout initiated</div>
+  <div class="trig-sub2">No action needed from you. Processing now.</div>
+  <div class="processing-steps" id="trigSteps">
+    <div class="ps2-row"><div class="ps2-dot ds"></div><div class="ps2-txt">Trigger conditions verified &#10003;</div></div>
+    <div class="ps2-row"><div class="ps2-dot ds"></div><div class="ps2-txt">Coverage eligibility confirmed &#10003;</div></div>
+    <div class="ps2-row"><div class="ps2-dot da" id="ts3"></div><div class="ps2-txt" id="tt3">Initiating UPI transfer...</div></div>
+  </div>
+  <button class="btn-full" id="payBtn" style="display:none" onclick="goS(7)">View Payout &#8594;</button>
+</div>
+</div>
+</div>
+
+<!-- ============ S7: PAYOUT ============ -->
+<div class="screen" id="s7">
+<div class="confetti" id="confetti"></div>
+<nav>
+  <div class="nav-logo" onclick="goS(1)"><div class="nav-icon">&#9889;</div><span style="color:var(--w90)">Fund</span><span style="color:var(--amber)">Saathi</span></div>
+  <div style="font-size:13px;color:var(--green);font-weight:500">Payout Complete</div>
+  <button class="btn btn-amber" onclick="goS(5)">Back to Dashboard</button>
+</nav>
+<div class="pay-wrap">
+<div class="pay-card fadein">
+  <div class="success-ring"><div class="sr-inner">&#10003;</div></div>
+  <div class="pay-h sora">Payout Successful!</div>
+  <div class="pay-sub">Transferred directly to your UPI account</div>
+  <div class="pay-amount">&#8377;380</div>
+  <div class="pay-upi">&#10132; ramesh.k@upi &nbsp;&middot;&nbsp; Ref #FS-8821</div>
+  <div class="timeline">
+    <div class="tl-step tl-done">&#10003; Risk detected</div>
+    <div class="tl-arrow">&#8594;</div>
+    <div class="tl-step tl-done">&#10003; Verified</div>
+    <div class="tl-arrow">&#8594;</div>
+    <div class="tl-step tl-done">&#10003; Transferred</div>
+    <div class="tl-arrow">&#8594;</div>
+    <div class="tl-step tl-done" style="background:var(--gdim);color:var(--green);border:1px solid var(--gborder)">&#10003; In your account</div>
+  </div>
+  <div class="pay-receipt">
+    <div class="pr-row"><div class="pr-lbl">Trigger</div><div class="pr-val">Rain 14.2mm + Traffic 52min</div></div>
+    <div class="pr-row"><div class="pr-lbl">Your plan</div><div class="pr-val">Standard (&#8377;500/day max)</div></div>
+    <div class="pr-row"><div class="pr-lbl">Income gap</div><div class="pr-val">&#8377;380 calculated</div></div>
+    <div class="pr-row"><div class="pr-lbl">Processing time</div><div class="pr-val">1 hr 48 min</div></div>
+    <div class="pr-row"><div class="pr-lbl">Amount transferred</div><div class="pr-val pr-val-g">&#8377;380</div></div>
+  </div>
+  <button class="btn-full" onclick="goS(5)">Back to Dashboard &#8594;</button>
+  <button class="btn-full btn-full-ghost" style="margin-top:0">Download Receipt</button>
+  <div style="text-align:center;font-size:12px;color:var(--w30);margin-top:12px">&#8377;2.3 Cr+ paid out to riders across India</div>
+</div>
+</div>
+</div>
+
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<script>
+let curScreen=1;
+let dashChartInst=null;
+
+function goS(n){
+  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+  document.getElementById('s'+n).classList.add('active');
+  curScreen=n;
+  if(n===3) startRiskLoader();
+  if(n===5){ setTimeout(initDashChart,200); }
+  if(n===6) startTrigger();
+  if(n===7) startPayout();
+  window.scrollTo(0,0);
+}
+
+function startRiskLoader(){
+  document.getElementById('riskLoading').style.display='block';
+  document.getElementById('riskResult').style.display='none';
+  const steps=[
+    {d:'ld1',t:'lt1',done:'Weather data loaded for your city ✓',delay:1100},
+    {d:'ld2',t:'lt2',done:'Traffic risk index calculated ✓',delay:2200},
+    {d:'ld3',t:'lt3',done:'Risk profile generated ✓',delay:3200},
+  ];
+  steps.forEach((s,i)=>{
+    setTimeout(()=>{
+      if(i>0){document.getElementById(steps[i-1].d).className='ld-dot done';}
+      document.getElementById(s.d).className='ld-dot act';
+    },i===0?0:steps[i-1].delay);
+    setTimeout(()=>{
+      document.getElementById(s.t).textContent=s.done;
+      document.getElementById(s.t).style.color='var(--green)';
+    },s.delay-80);
+  });
+  setTimeout(()=>{
+    document.getElementById('ld3').className='ld-dot done';
+    document.getElementById('riskLoading').style.display='none';
+    document.getElementById('riskResult').style.display='block';
+    animGauge();
+  },3800);
+}
+
+function animGauge(){
+  let v=0;const target=62;
+  const arc=document.getElementById('gArc');
+  const num=document.getElementById('gNum');
+  const iv=setInterval(()=>{
+    v=Math.min(v+2,target);
+    num.textContent=v;
+    const c=2*Math.PI*54;
+    arc.setAttribute('stroke-dasharray',`${(v/100)*c} ${c}`);
+    if(v>=target)clearInterval(iv);
+  },30);
+}
+
+let obCurStep=1;
+function obNext(to){
+  if(to===3){
+    const sel=document.querySelectorAll('#ob2 .pc.sel');
+    if(sel.length===0){document.getElementById('platErr').style.display='block';return;}
+    document.getElementById('platErr').style.display='none';
+  }
+  if(to===4){
+    const city=document.getElementById('obCity').value.trim();
+    if(!city){document.getElementById('obCity').style.borderColor='var(--red)';return;}
+    document.getElementById('obCity').style.borderColor='';
+  }
+  document.getElementById('ob'+obCurStep).style.display='none';
+  obCurStep=to;
+  document.getElementById('ob'+to).style.display='block';
+  updateObProg(to);
+}
+function obBack(to){
+  document.getElementById('ob'+obCurStep).style.display='none';
+  obCurStep=to;
+  document.getElementById('ob'+to).style.display='block';
+  updateObProg(to);
+}
+function updateObProg(step){
+  const segs=document.querySelectorAll('#obProg .pb-seg');
+  const times=['~1 minute left','~40 seconds','~20 seconds','Almost done!'];
+  segs.forEach((s,i)=>{
+    s.className='pb-seg';
+    if(i<step-1)s.classList.add('done');
+    else if(i===step-1)s.classList.add('active');
+  });
+  document.getElementById('obStep').textContent='Step '+step+' of 4';
+  document.getElementById('obTime').textContent=times[step-1];
+}
+function toggleP(el){el.classList.toggle('sel');}
+function selFreq(el){document.querySelectorAll('.fp').forEach(f=>f.classList.remove('sel'));el.classList.add('sel');}
+
+const plans={
+  Basic:{cov:'₹200/day',speed:'4 hours',price:'₹0'},
+  Standard:{cov:'₹500/day',speed:'2 hours',price:'₹49'},
+  Pro:{cov:'₹1,200/day',speed:'30 min',price:'₹129'}
+};
+let selPlanName='Standard';
+function selPlan(card,name){
+  document.querySelectorAll('.plan-card').forEach(c=>c.classList.remove('sel'));
+  document.querySelectorAll('.plan-sel-ind').forEach(i=>i.textContent='');
+  card.classList.add('sel');
+  const id='pi-'+name.toLowerCase();
+  if(document.getElementById(id)) document.getElementById(id).textContent='✓';
+  selPlanName=name;
+  const p=plans[name];
+  document.getElementById('sumPlan').textContent=name;
+  document.getElementById('sumCov').textContent=p.cov;
+  document.getElementById('sumSpeed').textContent=p.speed;
+  document.getElementById('sumPrice').textContent=p.price+'/mo';
+}
+
+function initDashChart(){
+  const canvas=document.getElementById('dashChart');
+  if(!canvas||typeof Chart==='undefined')return;
+  if(dashChartInst){dashChartInst.destroy();dashChartInst=null;}
+  const labels=['8AM','9AM','10AM','11AM','12PM','1PM','2PM','3PM','4PM','Now'];
+  const actual=[0,55,105,140,185,235,280,305,350,380];
+  const expected=[0,75,135,175,225,285,345,405,475,545];
+  dashChartInst=new Chart(canvas,{
+    type:'line',
+    data:{labels,datasets:[
+      {label:'Actual',data:actual,borderColor:'#FBBF24',borderWidth:2,pointBackgroundColor:'#FBBF24',pointRadius:2,tension:0.4,fill:false},
+      {label:'Expected',data:expected,borderColor:'rgba(255,255,255,0.22)',borderWidth:1.5,borderDash:[4,4],pointRadius:0,tension:0.4,fill:false},
+      {label:'Gap',data:expected,borderWidth:0,pointRadius:0,backgroundColor:'rgba(248,113,113,0.11)',fill:{target:0,above:'rgba(248,113,113,0.11)',below:'transparent'},tension:0.4}
+    ]},
+    options:{responsive:true,interaction:{mode:'index',intersect:false},plugins:{legend:{display:false},tooltip:{backgroundColor:'rgba(19,25,41,0.95)',borderColor:'rgba(255,255,255,0.1)',borderWidth:1,titleColor:'rgba(255,255,255,0.9)',bodyColor:'rgba(255,255,255,0.6)',padding:10,callbacks:{label:(c)=>{if(c.datasetIndex===2)return null;return(c.datasetIndex===0?'Actual':'Expected')+': ₹'+c.parsed.y;}}}},scales:{x:{grid:{color:'rgba(255,255,255,0.04)'},ticks:{color:'rgba(255,255,255,0.38)',font:{size:10}}},y:{grid:{color:'rgba(255,255,255,0.04)'},ticks:{color:'rgba(255,255,255,0.38)',font:{size:10},callback:v=>'₹'+v},beginAtZero:true}}}
+  });
+  document.querySelectorAll('.tab').forEach(t=>{t.addEventListener('click',function(){document.querySelectorAll('.tab').forEach(x=>x.classList.remove('act'));this.classList.add('act');});});
+  document.querySelectorAll('.ni').forEach(n=>{n.addEventListener('click',function(){document.querySelectorAll('.ni').forEach(x=>x.classList.remove('act'));this.classList.add('act');});});
+}
+
+function startTrigger(){
+  document.getElementById('ts3').className='ps2-dot da';
+  document.getElementById('tt3').textContent='Initiating UPI transfer...';
+  document.getElementById('payBtn').style.display='none';
+  setTimeout(()=>{
+    document.getElementById('ts3').className='ps2-dot ds';
+    document.getElementById('tt3').textContent='UPI transfer initiated ✓';
+    document.getElementById('payBtn').style.display='block';
+  },2800);
+}
+
+function startPayout(){
+  const cf=document.getElementById('confetti');
+  cf.innerHTML='';
+  const colors=['#FBBF24','#34D399','#60A5FA','#F87171','#A78BFA','#FCD34D'];
+  for(let i=0;i<40;i++){
+    const p=document.createElement('div');
+    p.className='cf-piece';
+    p.style.cssText=`left:${Math.random()*100}%;background:${colors[Math.floor(Math.random()*colors.length)]};animation-duration:${Math.random()*2+1.5}s;animation-delay:${Math.random()*0.8}s;opacity:${Math.random()*0.7+0.3};width:${Math.random()*8+4}px;height:${Math.random()*8+4}px`;
+    cf.appendChild(p);
+  }
+  setTimeout(()=>{cf.innerHTML='';},4000);
+}
+
+(function initRain(){
+  const r=document.getElementById('s1-rain');
+  const vr=document.getElementById('vis-rain');
+  if(r){for(let i=0;i<16;i++){const l=document.createElement('div');l.className='rain-line';l.style.cssText=`left:${Math.random()*100}%;height:${Math.random()*100+60}px;animation-duration:${Math.random()+1.4}s;animation-delay:-${Math.random()*2}s`;r.appendChild(l);}}
+  if(vr){for(let i=0;i<10;i++){const l=document.createElement('div');l.className='rain-line';l.style.cssText=`left:${Math.random()*100}%;height:${Math.random()*80+50}px;animation-duration:${Math.random()+1.5}s;animation-delay:-${Math.random()*2}s`;vr.appendChild(l);}}
+})();
+</script>
