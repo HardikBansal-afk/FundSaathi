@@ -24,21 +24,7 @@ Instead of requiring users to file claims, the system continuously monitors real
 ---
 
 ## 🔄 System Flow
-User Onboards
-↓
-Risk Profiling (AI-based)
-↓
-Weekly Plan Assigned
-↓
-Real-Time Monitoring (Weather + AQI + Traffic + Restrictions)
-↓
-Trigger Condition Met
-↓
-Trust Score Evaluation (Anti-Fraud Layer)
-↓
-Payout Decision
-↓
-Instant Credit to User
+User Onboards -> Risk Profiling (AI-based) -> Weekly Plan Assigned -> Real-Time Monitoring (Weather + AQI + Traffic + Restrictions) -> Trigger Condition Met -> Trust Score Evaluation (Anti-Fraud Layer) -> Payout Decision -> Instant Credit to User
 ---
 
 ## ⚡ Why This Approach Works
